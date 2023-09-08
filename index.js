@@ -12,7 +12,10 @@ client.on("ready", () => {
 //save in database when install to new server
 client.on("guildCreate", (guild) => {
     console.log(guild);
-    dbConnection("insert into disocrd_servers (guild_id) values('" + guild.id + "') ");
+
+    // insert in to database or update the table
+    dbConnection("insert into disocrd_servers (guild_id, status) values('" + guild.id + "', 'active') on duplicate key update status='active' ").then(() => {
+    });
 
     const channel = guild.systemChannel || guild.channels.cache.find((ch)=> ch.type === "text");
 
@@ -24,4 +27,12 @@ client.on("guildCreate", (guild) => {
 client.on("guildIntegrationsUpdate", (guild) => {
     console.log(JSON.stringify(guild))
 });
+
+
+
+client.on("guildDelete", (guild) => {
+    dbConnection("update disocrd_servers  set status = 'inactive'  where guild_id = ('" + guild.id + "') ");
+
+});
+
 client.login(config.discord_token);
