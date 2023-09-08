@@ -1,9 +1,10 @@
 import { Client, Events, GatewayIntentBits } from "discord.js";
 import { config } from "./config.mjs";
 import dbConnection from "./dbconnection.mjs";
+import { manageMessage } from "./discord/messageHandle.mjs";
 
 //start bot and listen to events
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageTyping, ,] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.MessageContent ] });
 
 client.on("ready", () => {
     console.log("Bot is up and running");
@@ -29,10 +30,22 @@ client.on("guildIntegrationsUpdate", (guild) => {
 });
 
 
-
 client.on("guildDelete", (guild) => {
     dbConnection("update disocrd_servers  set status = 'inactive'  where guild_id = ('" + guild.id + "') ");
 
 });
+
+
+//read message and send to manage message
+client.on("messageCreate", (message)=>{
+    if( message.author.bot) return;
+
+    const messageContent =  message.content.toLocaleLowerCase().trim();
+    if(messageContent.startsWith(".crush")) {
+        return manageMessage(client, messageContent);
+    }
+    return ;
+})
+
 
 client.login(config.discord_token);
