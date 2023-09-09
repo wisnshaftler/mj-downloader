@@ -2,6 +2,9 @@ import { Client, Events, GatewayIntentBits } from "discord.js";
 import { config } from "./config.mjs";
 import dbConnection from "./dbconnection.mjs";
 import { manageMessage } from "./discord/messageHandle.mjs";
+import express from "express";
+import cors from "cors";
+
 
 //start bot and listen to events
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.MessageContent ] });
@@ -49,3 +52,12 @@ client.on("messageCreate", (message)=>{
 
 
 client.login(config.discord_token);
+
+//start express server for serving
+const server = express();
+server.use(cors());
+server.use(express.json());
+server.use(express.static("public"));
+server.listen(config.server_port, function(){
+    console.log("Server is up and running on port ", config.server_port);
+})

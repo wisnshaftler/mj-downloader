@@ -2,6 +2,7 @@ import { Client, Events, GatewayIntentBits } from "discord.js";
 import { config } from "../config.mjs";
 import dbConnection from "../dbconnection.mjs";
 import { helpHandler } from "./help.mjs";
+import { getMessageById } from "./getMsgById.mjs";
 
 /**
  * 
@@ -27,7 +28,13 @@ export async function downloadHandler(client, message, messageContent) {
 
     //send the processing message to the discord server
     message.channel.send("Processing download");
-    
+
     //get the message content and send it to downloader
+    const replyMessageContent = await getMessageById(client, message, reference);
+
+    //get image name and attachment main image link
+    const attachments = replyMessageContent.attachments.first();
+
+    //send to the downloader 
     
 }
