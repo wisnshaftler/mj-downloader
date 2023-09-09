@@ -38,7 +38,7 @@ client.on("guildDelete", (guild) => {
 
 //read message and send to manage message
 client.on("messageCreate", (message)=>{
-    if( message.author.bot) return;
+    if( message.author.id == client.user.id) return;
 
     const messageContent =  message.content.toLocaleLowerCase().trim();
     if(messageContent.startsWith(".crush")) {
