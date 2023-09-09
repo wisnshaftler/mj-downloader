@@ -42,7 +42,7 @@ client.on("messageCreate", (message)=>{
 
     const messageContent =  message.content.toLocaleLowerCase().trim();
     if(messageContent.startsWith(".crush")) {
-        return manageMessage(client, messageContent);
+        return manageMessage(client, message, messageContent);
     }
     return ;
 })
