@@ -73,7 +73,7 @@ async function executeTask() {
 
     //save data in database and reponse to the message with downloadable links
     const sql = `insert into download_images (message_id, prompt, url_unique_id, local_img_key, download_imgs, discord_preview, guild_id) values(?, ?, ?, ?, ?, ?, ? ) `;
-    dbConnection(sql, [ taskData.message.id , imagePrompt, urlUniqueId, taskData.uniqueId , generatedImages.join(","), taskData.attachment.url, taskData.message.guildId.toString()]);
+    dbConnection(sql, [ taskData.mjMessage.id , imagePrompt, urlUniqueId, taskData.uniqueId , generatedImages.join(","), taskData.attachment.url, taskData.message.guildId.toString()]);
 }
 
 export function createExecutors() {

@@ -4,6 +4,7 @@ import {dbConnection} from "../dbconnection.mjs";
 import { helpHandler } from "./help.mjs";
 import { getMessageById } from "./getMsgById.mjs";
 import { addDownloadTask } from "../image_downloader/image_downloader.mjs";
+import { alreadyDownloaded } from "../utils/alreadyDownloaded.mjs";
 
 /**
  * 
@@ -34,6 +35,13 @@ export async function downloadHandler(client, message, messageContent) {
     //get the message content and send it to downloader
     const replyMessageContent = await getMessageById(client, message, reference);
 
+    //check already downloaded, if yes then send from the databse
+    const dbResult = await alreadyDownloaded(replyMessageContent.id, message);
+    if(dbResult) {
+        return ;
+    }
+
+
     //get image name and attachment main image link
     const attachments = replyMessageContent.attachments.first();
 
@@ -42,6 +50,7 @@ export async function downloadHandler(client, message, messageContent) {
 }
 
 export async function emojiDownloadHandler(client, messageId, reaction) {
+
     //get MJ message content
     const replyMessageContent = await getMessageById(client, reaction.message, reaction);
 
@@ -50,6 +59,12 @@ export async function emojiDownloadHandler(client, messageId, reaction) {
     }
     
     reaction.message.reply("Processing download");
+
+    //check already downloaded, if yes then send from the databse
+    const dbResult = await alreadyDownloaded(replyMessageContent.id, reaction.message);
+    if(dbResult) {
+        return ;
+    }
 
     //get image name and attachment main image link
     const attachments = replyMessageContent.attachments.first();

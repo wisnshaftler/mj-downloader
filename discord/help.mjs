@@ -24,6 +24,9 @@ export async function helpHandler(client, message){
         (in this case 4). You can use 2x 4x 6x 8x as your plan._
 - '👇' 
     - _This is the easy way to download images. Add "point down" emoji to the MJ image message and then bot will download the image_
+
+-  \`.crush d \`
+    - _Same as download_
     `;
 
     message.channel.send(helpContent);

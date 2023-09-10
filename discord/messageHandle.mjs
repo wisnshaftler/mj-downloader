@@ -21,4 +21,9 @@ export async function manageMessage(client, message, messageContent) {
     if(messageContent.startsWith(".crush download")) {
         return downloadHandler(client, message, messageContent);
     }
+
+    if(messageContent.startsWith(".crush d")) {
+        return downloadHandler(client, message, messageContent);
+    }
+    
 }
