@@ -11,7 +11,7 @@ import { helpHandler } from "./help.mjs";
  * @returns {Promise object} error null
  */
 export async function getMessageById(client, message, reference) {
-    const messageId = reference.messageId;
+    const messageId = reference.messageId || message.id;
 
     try {
         const messageContent = await message.channel.messages.fetch(messageId);

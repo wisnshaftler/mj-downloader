@@ -1,13 +1,15 @@
-import { Client, Events, GatewayIntentBits } from "discord.js";
+import { Client, Events, GatewayIntentBits, Partials} from "discord.js";
 import { config } from "./config.mjs";
 import {dbConnection} from "./dbconnection.mjs";
 import { manageMessage } from "./discord/messageHandle.mjs";
 import express from "express";
 import cors from "cors";
+import { emojiDownloadHandler } from "./discord/downloadHandle.mjs";
 
 
 //start bot and listen to events
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.MessageContent ] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.DirectMessageReactions],
+partials: [Partials.Message, Partials.Channel, Partials.Reaction] });
 
 client.on("ready", () => {
     console.log("Bot is up and running");
@@ -49,6 +51,13 @@ client.on("messageCreate", (message)=>{
     }
     return ;
 })
+
+client.on("messageReactionAdd", (reaction, user)=>{
+    //console.log(reaction);
+    if(reaction.emoji.name == '👇') {
+        return emojiDownloadHandler(client, reaction.message.id, reaction);
+    }
+});
 
 
 client.login(config.discord_token);
