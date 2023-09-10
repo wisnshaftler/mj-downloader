@@ -1,8 +1,6 @@
 import mysql from 'mysql2';
 import { config } from './config.mjs';
 
-console.log(config)
-
 const pool = new mysql.createPool({
     host: config.dbhost,
     user: config.dbuser,
@@ -14,9 +12,13 @@ const pool = new mysql.createPool({
 });
 const promisePool = pool.promise();
 
-async function dbConnection(query) {
+async function dbConnection(query, values) {
+    if(Array.isArray(values)) {
+        const [rows, fields] = await promisePool.query(query, values);
+        return { rows, fields, query};
+    } 
     const [rows, fields] = await promisePool.query(query);
     return { rows, fields, query};
 }
 
-export default dbConnection;
+export  {dbConnection, pool};

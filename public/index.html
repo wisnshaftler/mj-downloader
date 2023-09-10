@@ -1,11 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Image Viewer</title>
 </head>
+
 <body>
-    Eth mama panapitin sandamali
+    <h1>Image Viewer</h1>
+    <div id="image-container">
+        <!-- The image will be rendered here -->
+    </div>
+
+    <script>
+        // Function to get URL query parameters
+        function getQueryParam(param) {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            return urlParams.get(param);
+        }
+
+        // Get the value of the "img" query parameter from the URL
+        const imageUrl = getQueryParam("img");
+
+        if (imageUrl) {
+            // Create an image element and set its source to the specified URL
+            const imageElement = document.createElement("img");
+            imageElement.src = imageUrl;
+
+            // Add the image element to the image-container div
+            const imageContainer = document.getElementById("image-container");
+            imageContainer.appendChild(imageElement);
+        } else {
+            // Display an error message if "img" query parameter is not provided
+            const errorMessage = document.createElement("p");
+            errorMessage.textContent = "No image URL provided.";
+            document.body.appendChild(errorMessage);
+        }
+    </script>
 </body>
+
 </html>

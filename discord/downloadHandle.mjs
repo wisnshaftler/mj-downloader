@@ -1,8 +1,9 @@
 import { Client, Events, GatewayIntentBits } from "discord.js";
 import { config } from "../config.mjs";
-import dbConnection from "../dbconnection.mjs";
+import {dbConnection} from "../dbconnection.mjs";
 import { helpHandler } from "./help.mjs";
 import { getMessageById } from "./getMsgById.mjs";
+import { addDownloadTask } from "../image_downloader/image_downloader.mjs";
 
 /**
  * 
@@ -36,5 +37,5 @@ export async function downloadHandler(client, message, messageContent) {
     const attachments = replyMessageContent.attachments.first();
 
     //send to the downloader 
-    
+    addDownloadTask(client, message, replyMessageContent, attachments);
 }

@@ -1,6 +1,6 @@
 import { Client, Events, GatewayIntentBits } from "discord.js";
 import { config } from "./config.mjs";
-import dbConnection from "./dbconnection.mjs";
+import {dbConnection} from "./dbconnection.mjs";
 import { manageMessage } from "./discord/messageHandle.mjs";
 import express from "express";
 import cors from "cors";
