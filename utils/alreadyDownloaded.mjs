@@ -1,5 +1,5 @@
 import { dbConnection } from "../dbconnection.mjs";
-import { config } from "dotenv";
+import { config } from "../config.mjs";
 
 export async function alreadyDownloaded(messageId, message) {
     const dbResult = await dbConnection("Select * from download_images where message_id = ? order by id desc limit 1 ", [messageId]);
@@ -19,6 +19,5 @@ export async function alreadyDownloaded(messageId, message) {
     discordMessage += `
         ${discordAttachment}`;
 
-    message.reply(discordMessage);
-    return true;
+    return [discordMessage, dbResult.rows[0]];
 }

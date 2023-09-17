@@ -3,6 +3,7 @@ import { config } from "../config.mjs";
 import {dbConnection} from "../dbconnection.mjs";
 import { helpHandler } from "./help.mjs";
 import { downloadHandler } from "./downloadHandle.mjs";
+import { enlargeHandler } from "./enlargeHandle.mjs";
 
 /**
  * 
@@ -26,4 +27,7 @@ export async function manageMessage(client, message, messageContent) {
         return downloadHandler(client, message, messageContent);
     }
     
+    if(messageContent.startsWith(".crush large")) {
+        return enlargeHandler(client, message, messageContent);
+    }
 }

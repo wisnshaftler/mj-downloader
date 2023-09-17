@@ -3,7 +3,7 @@ import { config } from "../config.mjs";
 import {dbConnection} from "../dbconnection.mjs";
 import { helpHandler } from "./help.mjs";
 import { getMessageById } from "./getMsgById.mjs";
-import { addDownloadTask } from "../image_downloader/image_downloader.mjs";
+import { addDownloadTask } from "../image_functions/image_downloader.mjs";
 import { alreadyDownloaded } from "../utils/alreadyDownloaded.mjs";
 
 /**
@@ -36,9 +36,9 @@ export async function downloadHandler(client, message, messageContent) {
     const replyMessageContent = await getMessageById(client, message, reference);
 
     //check already downloaded, if yes then send from the databse
-    const dbResult = await alreadyDownloaded(replyMessageContent.id, message);
-    if(dbResult) {
-        return ;
+    const dbResult = await alreadyDownloaded(replyMessageContent.id, replyMessageContent);
+    if(Array.isArray(dbResult)) {
+        return replyMessageContent.reply(dbResult[0])
     }
 
 
@@ -62,8 +62,8 @@ export async function emojiDownloadHandler(client, messageId, reaction) {
 
     //check already downloaded, if yes then send from the databse
     const dbResult = await alreadyDownloaded(replyMessageContent.id, reaction.message);
-    if(dbResult) {
-        return ;
+    if(Array.isArray(dbResult)) {
+        return replyMessageContent.reply(dbResult[0])
     }
 
     //get image name and attachment main image link
