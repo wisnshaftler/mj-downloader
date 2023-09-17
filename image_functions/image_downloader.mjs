@@ -19,7 +19,7 @@ const awaiter = async (waitMs) => new Promise(resolve => { setTimeout(() => { re
 
 async function executeTask() {
     let taskData = null;
-
+    
     if (waitingList.length <= 0) {
         await awaiter(100);
         return executeTask();
@@ -75,10 +75,9 @@ async function executeTask() {
 
     //save data in database and reponse to the message with downloadable links
     const sql = `insert into download_images (message_id, prompt, url_unique_id, local_img_key, download_imgs, discord_preview, guild_id) values(?, ?, ?, ?, ?, ?, ? ) `;
-    dbConnection(sql, [taskData.mjMessage.id, imagePrompt, urlUniqueId, taskData.uniqueId, generatedImages.join(","), taskData.attachment.url, taskData.message.guildId.toString()]);
-
-    //check and start enlarge the image
-    executeEnlargeQueue(taskData.mjMessage.id);
+    dbConnection(sql, [taskData.mjMessage.id, imagePrompt, urlUniqueId, taskData.uniqueId, generatedImages.join(","), taskData.attachment.url, taskData.message.guildId.toString()]).then( () =>{    
+        executeEnlargeQueue(taskData.mjMessage.id); 
+    });
 
 }
 
@@ -90,90 +89,91 @@ export function createExecutors() {
 
 createExecutors();
 
-export async function imageDownloader(imageLink, fileName) {
-    let response = "";
-    try {
-        response = await axios.get(imageLink, { responseType: 'arraybuffer' });
-        await new Promise((resolve, reject) => { 
-            
-            fs.writeFile("./public/img/" +fileName, response.data, (err) => {
-                if (err) {
-                    console.log(err);
-                    reject(null);
-                }
-                resolve(true)
-            });
-        });
-        return true;
-    } catch (e) {
-        return null;
-    }
-}
-
 // export async function imageDownloader(imageLink, fileName) {
-//     //create browser in puppeteer
-//     const browser = await puppeteer.launch({
-//         //executablePath: "/usr/bin/chromium-browser",
-//         headless: 'new',
-//         args: [
-//             '--disable-web-security',
-//             '--disable-features=IsolateOrigins',
-//             '--disable-site-isolation-trials',
-//             '--no-sandbox',
-//             '--disable-setuid-sandbox'
-//         ]
-//     });
-
-//     const page = await browser.newPage();
-//     await page.goto(`${config.server_host}?img=${imageLink}`);
-
-//     let base64Data = await page.evaluate((imageLink) => {
-//         return new Promise((resolve, reject) => {
-//             const img = document.querySelector('img');
-//             try {
-//                 var canvas = document.createElement('canvas');
-//                 var context = canvas.getContext('2d');
-
-//                 // Set the canvas dimensions to match the image
-//                 canvas.width = img.width;
-//                 canvas.height = img.height;
-
-//                 // Draw the image onto the canvas
-//                 context.drawImage(img, 0, 0);
-
-//                 // Get the base64-encoded data from the canvas
-//                 const base64Data = canvas.toDataURL('image/png');
-
-//                 resolve(base64Data);
-//             } catch (e) {
-//                 resolve("")
-//             }
-//         })
-//     }, imageLink);
-
-//     base64Data = base64Data.replace(/^data:image\/png;base64,/, "");
-
-//     await page.close();
-//     await browser.close();
-
-//     //if cant download file retunr
-//     if (base64Data == "") {
-//         return null;
-//     }
-
-//     //save file in image
+//     let response = "";
 //     try {
-//         await new Promise((resolve, reject) => {
-//             fs.writeFile("./public/img/" + fileName , base64Data, "base64", (error) => {
-//                 if (error) {
-//                     reject (null);
+//         response = await axios.get(imageLink, {  responseType: 'arraybuffer' });
+//         await new Promise((resolve, reject) => { 
+            
+//             fs.writeFile("./public/img/" +fileName, response.data, (err) => {
+//                 if (err) {
+//                     console.log(err);
+//                     reject(null);
 //                 }
-//                 resolve(true);
-//             })
-//         })
+//                 resolve(true)
+//             });
+//         });
 //         return true;
 //     } catch (e) {
-//         return null
+//         console.log(e.message);
+//         return null;
 //     }
-//}
+// }
+
+export async function imageDownloader(imageLink, fileName) {
+    //create browser in puppeteer
+    const browser = await puppeteer.launch({
+        //executablePath: "/usr/bin/chromium-browser",
+        headless: 'new',
+        args: [
+            '--disable-web-security',
+            '--disable-features=IsolateOrigins',
+            '--disable-site-isolation-trials',
+            '--no-sandbox',
+            '--disable-setuid-sandbox'
+        ]
+    });
+
+    const page = await browser.newPage();
+    await page.goto(`${config.server_host}?img=${imageLink}`);
+
+    let base64Data = await page.evaluate((imageLink) => {
+        return new Promise((resolve, reject) => {
+            const img = document.querySelector('img');
+            try {
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+
+                // Set the canvas dimensions to match the image
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                // Draw the image onto the canvas
+                context.drawImage(img, 0, 0);
+
+                // Get the base64-encoded data from the canvas
+                const base64Data = canvas.toDataURL('image/png');
+
+                resolve(base64Data);
+            } catch (e) {
+                resolve("")
+            }
+        })
+    }, imageLink);
+
+    base64Data = base64Data.replace(/^data:image\/png;base64,/, "");
+
+    await page.close();
+    await browser.close();
+
+    //if cant download file retunr
+    if (base64Data == "") {
+        return null;
+    }
+
+    //save file in image
+    try {
+        await new Promise((resolve, reject) => {
+            fs.writeFile("./public/img/" + fileName , base64Data, "base64", (error) => {
+                if (error) {
+                    reject (null);
+                }
+                resolve(true);
+            })
+        })
+        return true;
+    } catch (e) {
+        return null
+    }
+}
 
