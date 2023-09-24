@@ -5,6 +5,7 @@ import { manageMessage } from "./discord/messageHandle.mjs";
 import express from "express";
 import cors from "cors";
 import { emojiDownloadHandler } from "./discord/downloadHandle.mjs";
+import { stripeRouter } from "./stripe/stripe_listening.mjs";
 
 
 //start bot and listen to events
@@ -20,7 +21,7 @@ client.on("guildCreate", (guild) => {
     console.log(guild);
 
     // insert in to database or update the table
-    dbConnection("insert into disocrd_servers (guild_id, status) values('" + guild.id + "', 'active') on duplicate key update status='active' ").then(() => {
+    dbConnection("insert into discord_servers (guild_id, status) values('" + guild.id + "', 'active') on duplicate key update status='active' ").then(() => {
     });
 
     const channel = guild.systemChannel || guild.channels.cache.find((ch)=> ch.type === "text");
@@ -36,7 +37,7 @@ client.on("guildIntegrationsUpdate", (guild) => {
 
 
 client.on("guildDelete", (guild) => {
-    dbConnection("update disocrd_servers  set status = 'inactive'  where guild_id = ('" + guild.id + "') ");
+    dbConnection("update discord_servers  set status = 'inactive'  where guild_id = ('" + guild.id + "') ");
 
 });
 
@@ -67,6 +68,8 @@ const server = express();
 server.use(cors());
 server.use(express.json());
 server.use(express.static("public"));
+server.use("/webhooks/stripe", stripeRouter );
+
 server.listen(config.server_port, function(){
     console.log("Server is up and running on port ", config.server_port);
 })
