@@ -4,7 +4,7 @@ import {dbConnection} from "../dbconnection.mjs";
 import { helpHandler } from "./help.mjs";
 import { downloadHandler } from "./downloadHandle.mjs";
 import { enlargeHandler } from "./enlargeHandle.mjs";
-import { getPaymentUrl } from "./paymentHandle.mjs";
+import { getPaymentMethods, getPaymentUrl } from "./paymentHandle.mjs";
 
 /**
  * 
@@ -32,8 +32,8 @@ export async function manageMessage(client, message, messageContent) {
         return enlargeHandler(client, message, messageContent);
     }
 
-    if(messageContent.startsWith(".crush pay methods")) {
-        return getPaymentMethods(client, message, message);
+    if(messageContent.startsWith(".crush packages")) {
+        return getPaymentMethods(client, message, messageContent);
     };
 
     if(messageContent.startsWith(".crush pay")) {

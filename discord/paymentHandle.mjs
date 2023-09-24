@@ -1,6 +1,6 @@
 import { Client, Events, GatewayIntentBits } from "discord.js";
 import { config } from "../config.mjs";
-import {dbConnection} from "../dbconnection.mjs";
+import { dbConnection } from "../dbconnection.mjs";
 import { helpHandler } from "./help.mjs";
 import { downloadHandler } from "./downloadHandle.mjs";
 import { enlargeHandler } from "./enlargeHandle.mjs";
@@ -9,42 +9,52 @@ import { createPaymentLink } from "../stripe/stripe_link.mjs";
 
 
 export async function getPaymentMethods(client, message, messageContent) {
-    const activeMethods = (await dbConnection("select * from packages where package_status = ? ", ["active" ])).rows;
-    
+    const activeMethods = (await dbConnection("select * from packages where package_status = ? ", ["active"])).rows;
+    let paymentMessage = '\n *You can buy these packages* \n';
+
+    for (let i = 0; i < activeMethods.length; i++) {
+        const active = activeMethods[i];
+        paymentMessage += `
+- *${active.package_name}.* **id: ${active.id}** 
+\`- Price ${active.package_price} \n - Package Request Count ${active.package_max_req} \`
+`;
+    }
+
+    message.reply(paymentMessage);
 }
 
 //get and send payment URL to the discord server
 export async function getPaymentUrl(client, message, messageContent) {
     //get current active payments
     const regexPayMatch = messageContent.match(/\.crush pay (\d+)/);
-    if(regexPayMatch == null) {
+    if (regexPayMatch == null) {
         return message.reply("Invalid command received");
     }
     //choosed payment method
     const choosedPayMethod = parseInt(regexPayMatch[1]);
 
     //get all active payment methods
-    const activeMethods = (await dbConnection("select * from packages where package_status = ? ", ["active" ])).rows;
+    const activeMethods = (await dbConnection("select * from packages where package_status = ? ", ["active"])).rows;
     let selectedmethod = null;
 
-    for(let i = 0; i < activeMethods.length; i++) { 
+    for (let i = 0; i < activeMethods.length; i++) {
         const activeMethod = activeMethods[i];
-        if(activeMethod.id == choosedPayMethod) {
+        if (activeMethod.id == choosedPayMethod) {
             selectedmethod = activeMethod;
             break;
         }
     }
-    
-    if( selectedmethod == null) {
+
+    if (selectedmethod == null) {
         return message.reply("Choosed method is incorrect");
     }
-    
+
 
     //create a checkout link and save it then return to the server with link
-    const localKey =  crypto.createHash('sha256').update(message.channelId + message.guildId + message.id + Date.now()).digest('hex');
+    const localKey = crypto.createHash('sha256').update(message.channelId + message.guildId + message.id + Date.now()).digest('hex');
 
     const result = await createPaymentLink(selectedmethod.stripe_price_id, localKey);
-    if(result == null) {
+    if (result == null) {
         return message.reply("There was an error creating the payment link. Please contact the administrator");
     }
 
