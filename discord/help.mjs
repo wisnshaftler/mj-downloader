@@ -31,7 +31,7 @@ export async function helpHandler(client, message){
 -  \`.crush packages \`
     - _Shows available packages_   
 
--   \`.crush pay 1
+-   \`.crush pay 1\`
     - _Buy the package. In the example 1 is the package id. When you use .crush packages command you can find all the packages and their IDs. Use this command for get the unique payment link for your account.
     `;
 

@@ -14,7 +14,8 @@ const config = {
     server_max_download_concurrency: parseInt(process.env.MAX_DOWNLOAD_CONCURRENCY) || 4,
     server_host: process.env.SERVER_HOST,
     stripe_token: process.env.STRIPE_TOKEN,
-    stripe_api_url: process.env.STRIPE_API_URL
+    stripe_api_url: process.env.STRIPE_API_URL,
+    admin_user_id: process.env.ADMIN_ID
 };
 
 export { config}

@@ -5,6 +5,7 @@ import { helpHandler } from "./help.mjs";
 import { downloadHandler } from "./downloadHandle.mjs";
 import { enlargeHandler } from "./enlargeHandle.mjs";
 import { getPaymentMethods, getPaymentUrl } from "./paymentHandle.mjs";
+import { adminCreatePakcage } from "./adminHandler.mjs";
 
 /**
  * 
@@ -38,5 +39,9 @@ export async function manageMessage(client, message, messageContent) {
 
     if(messageContent.startsWith(".crush pay")) {
         return getPaymentUrl(client, message, messageContent);
+    }
+
+    if(messageContent.startsWith(".crush create pack")) {
+        return adminCreatePakcage(client, message, messageContent);
     }
 }
