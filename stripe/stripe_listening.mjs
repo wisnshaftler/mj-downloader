@@ -32,8 +32,8 @@ stripeRouter.get("/payment-success", async (req, res)=>{
     //send stripe to disable the payment link
     disableLink(linkData.id);
 
-    res.send("done");
-    //res.redirect("https://discord.com/channels/@me");
+    // res.send("done");
+    res.redirect("https://discord.com/channels/@me");
 })
 
 
