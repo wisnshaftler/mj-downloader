@@ -23,6 +23,7 @@ export async function imageEnlarger(imageName, size) {
             return false;
         }
     } catch(e) {
+        console.log(e.message);
         return false;
     }
 }

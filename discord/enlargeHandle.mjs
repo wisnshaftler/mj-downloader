@@ -101,6 +101,7 @@ export async function enlargeImage(client, message, replyMessageContent, message
                 }
             }
         } catch (e) {
+            console.log(e.message);
         }
     }
 

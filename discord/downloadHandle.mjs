@@ -41,6 +41,7 @@ export async function downloadHandler(client, message, messageContent) {
             return message.reply("Your available requests count is over. Please buy more requests. Your last package is " + leftRequestCount[1].package);
         }
     } catch (e) {
+        console.log(e.message);
         return message.reply("This server have issue, please contact the administrator ERR 00BRW2");
     }
     //update requsst count
@@ -87,6 +88,7 @@ export async function emojiDownloadHandler(client, messageId, reaction) {
             return reaction.message.reply("Your available requests count is over. Please buy more requests. Your last package is " + leftRequestCount[1].package);
         }
     } catch (e) {
+        console.log(e.message);
         return reaction.message.reply("This server have issue, please contact the administrator ERR 00BRW4");
     }
     //update requsst count

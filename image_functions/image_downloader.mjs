@@ -146,6 +146,7 @@ export async function imageDownloader(imageLink, fileName) {
 
                 resolve(base64Data);
             } catch (e) {
+                console.log(e.message);
                 resolve("")
             }
         })
@@ -173,6 +174,7 @@ export async function imageDownloader(imageLink, fileName) {
         })
         return true;
     } catch (e) {
+        console.error(e);
         return null
     }
 }
