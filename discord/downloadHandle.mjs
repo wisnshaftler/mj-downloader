@@ -34,14 +34,14 @@ export async function downloadHandler(client, message, messageContent) {
     try {
         leftRequestCount = await isRequestCountExceeded(message.guildId);
         if (leftRequestCount[0] == false) {
-            return message.reply("This server have issue, please contact the administrator");
+            return message.reply("This server have issue, please contact the administrator. ERR 00BRW1");
         }
 
         if (leftRequestCount[1].request_count <= 0) {
             return message.reply("Your available requests count is over. Please buy more requests. Your last package is " + leftRequestCount[1].package);
         }
     } catch (e) {
-        return message.reply("This server have issue, please contact the administrator");
+        return message.reply("This server have issue, please contact the administrator ERR 00BRW2");
     }
     //update requsst count
     updateRequestCount(message.guildId, leftRequestCount[1].request_count - 1)
@@ -80,14 +80,14 @@ export async function emojiDownloadHandler(client, messageId, reaction) {
     try {
         leftRequestCount = await isRequestCountExceeded(reaction.message.guildId);
         if (leftRequestCount[0] == false) {
-            return reaction.message.reply("This server have issue, please contact the administrator");
+            return reaction.message.reply("This server have issue, please contact the administrator. ERR 00BRW3");
         }
 
         if (leftRequestCount[1].request_count <= 0) {
             return reaction.message.reply("Your available requests count is over. Please buy more requests. Your last package is " + leftRequestCount[1].package);
         }
     } catch (e) {
-        return reaction.message.reply("This server have issue, please contact the administrator");
+        return reaction.message.reply("This server have issue, please contact the administrator ERR 00BRW4");
     }
     //update requsst count
     await updateRequestCount(reaction.message.guildId, leftRequestCount[1].request_count - 1)

@@ -71,7 +71,7 @@ export async function enlargeImage(client, message, replyMessageContent, message
     try {
         leftRequestCount = await isRequestCountExceeded(message.guildId);
         if (leftRequestCount[0] == false) {
-            return message.reply("This server have issue, please contact the administrator");
+            return message.reply("This server have issue, please contact the administrator. ERR 00BRW5");
         }
 
         if (leftRequestCount[1].request_count <= 0) {
@@ -79,7 +79,7 @@ export async function enlargeImage(client, message, replyMessageContent, message
         }
     } catch (e) {
         console.log("errpr", e.message)
-        return message.reply("This server have issue, please contact the administrator");
+        return message.reply("This server have issue, please contact the administrator. ERR 00BRW6");
     }
     //update requsst count
     await updateRequestCount(message.guildId, leftRequestCount[1].request_count - 1);
@@ -110,7 +110,7 @@ export async function enlargeImage(client, message, replyMessageContent, message
     try {
         leftRequestCount = await isRequestCountExceeded(message.guildId);
         if (leftRequestCount[0] == false) {
-            return message.reply("This server have issue, please contact the administrator");
+            return message.reply("This server have issue, please contact the administrator. ERR 00BRW7");
         }
 
         if (leftRequestCount[1].request_count <= 0) {
@@ -118,7 +118,7 @@ export async function enlargeImage(client, message, replyMessageContent, message
         }
     } catch (e) {
         console.log("usue 2", e.message)
-        return message.reply("This server have issue, please contact the administrator");
+        return message.reply("This server have issue, please contact the administrator. ERR 00BRW18");
     }
     //update requsst count
     await updateRequestCount(message.guildId, leftRequestCount[1].request_count - 1)
