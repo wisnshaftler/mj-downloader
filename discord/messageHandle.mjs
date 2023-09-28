@@ -5,7 +5,7 @@ import { helpHandler } from "./help.mjs";
 import { downloadHandler } from "./downloadHandle.mjs";
 import { enlargeHandler } from "./enlargeHandle.mjs";
 import { getPaymentMethods, getPaymentUrl } from "./paymentHandle.mjs";
-import { adminCreatePakcage } from "./adminHandler.mjs";
+import { adminChangePackageStatus, adminCreatePakcage, adminUpdatePackage } from "./adminHandler.mjs";
 
 /**
  * 
@@ -43,5 +43,13 @@ export async function manageMessage(client, message, messageContent) {
 
     if(messageContent.startsWith(".crush create pack")) {
         return adminCreatePakcage(client, message, messageContent);
+    }
+
+    if(messageContent.startsWith(".crush au package")) {
+        return adminUpdatePackage(client, message, messageContent);
+    }
+
+    if(messageContent.startsWith(".crush change")) {
+        return adminChangePackageStatus(client, message, messageContent);
     }
 }
