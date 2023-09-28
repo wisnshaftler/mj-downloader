@@ -126,6 +126,7 @@ export async function imageDownloader(imageLink, fileName) {
 
     const page = await browser.newPage();
     await page.goto(`${config.server_host}?img=${imageLink}`);
+    console.log(imageLink);
 
     let base64Data = await page.evaluate((imageLink) => {
         return new Promise((resolve, reject) => {
@@ -167,6 +168,7 @@ export async function imageDownloader(imageLink, fileName) {
         await new Promise((resolve, reject) => {
             fs.writeFile("./public/img/" + fileName , base64Data, "base64", (error) => {
                 if (error) {
+                    console.log(error);
                     reject (null);
                 }
                 resolve(true);
