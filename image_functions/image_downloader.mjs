@@ -113,7 +113,7 @@ createExecutors();
 export async function imageDownloader(imageLink, fileName) {
     //create browser in puppeteer
     const browser = await puppeteer.launch({
-        //executablePath: "/usr/bin/chromium-browser",
+        executablePath: "/usr/bin/chromium-browser",
         headless: 'new',
         args: [
             '--disable-web-security',
