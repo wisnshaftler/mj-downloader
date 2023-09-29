@@ -35,7 +35,7 @@ async function executeTask() {
     }
 
     // create CDN links for MJ
-    const urlUniqueId = taskData.attachment.url.split("_").at(-1).replace(".png", "");
+    const urlUniqueId = taskData.attachment.url.split("_").at(-1).split("?")[0].replace(".png", "");
     console.log(urlUniqueId);
     console.log();
     console.log( taskData.attachment.url);
