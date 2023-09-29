@@ -61,7 +61,7 @@ client.on("messageReactionAdd", (reaction, user)=>{
 });
 
 
-//client.login(config.discord_token);
+client.login(config.discord_token);
 
 //start express server for serving
 const server = express();
