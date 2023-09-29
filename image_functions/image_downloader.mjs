@@ -112,17 +112,23 @@ createExecutors();
 
 export async function imageDownloader(imageLink, fileName) {
     //create browser in puppeteer
-    const browser = await puppeteer.launch({
-        executablePath: "/usr/bin/chromium-browser",
-        headless: 'new',
-        args: [
-            '--disable-web-security',
-            '--disable-features=IsolateOrigins',
-            '--disable-site-isolation-trials',
-            '--no-sandbox',
-            '--disable-setuid-sandbox'
-        ]
-    });
+
+    let browser = null;
+    try {
+        browser =  await puppeteer.launch({
+            executablePath: "/usr/bin/chromium-browser",
+            headless: 'new',
+            args: [
+                '--disable-web-security',
+                '--disable-features=IsolateOrigins',
+                '--disable-site-isolation-trials',
+                '--no-sandbox',
+                '--disable-setuid-sandbox'
+            ]
+        });
+    }catch (e) {
+        console.log(e.message);
+    }
 
     const page = await browser.newPage();
     await page.goto(`${config.server_host}?img=${imageLink}`);
