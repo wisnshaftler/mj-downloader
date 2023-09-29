@@ -36,11 +36,6 @@ async function executeTask() {
 
     // create CDN links for MJ
     const urlUniqueId = taskData.attachment.url.split("_").at(-1).split("?")[0].replace(".png", "");
-    console.log("url uniqu id = " ,urlUniqueId);
-    console.log();
-    console.log( taskData.attachment.url);
-    console.log( )
-    console.log(taskData.attachment)
 
     const imageURLS = [];
     for (let i = 0; i < 4; i++) {
@@ -132,7 +127,7 @@ export async function imageDownloader(imageLink, fileName) {
             ]
         });
     }catch (e) {
-        console.log(e.message);
+        return null;
     }
 
     const page = await browser.newPage();
