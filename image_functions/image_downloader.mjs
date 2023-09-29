@@ -37,8 +37,11 @@ async function executeTask() {
     // create CDN links for MJ
     const urlUniqueId = taskData.attachment.url.split("_").at(-1).replace(".png", "");
     console.log(urlUniqueId);
+    console.log();
     console.log( taskData.attachment.url);
-    
+    console.log( )
+    console.log(taskData.attachment)
+
     const imageURLS = [];
     for (let i = 0; i < 4; i++) {
         const url = `https://cdn.midjourney.com/${urlUniqueId}/0_${i}.png`
