@@ -21,7 +21,7 @@ export async function helpHandler(client, message){
         - _Basic command to download images. Please send this command as reply to the MJ image generated message._
 - \`.crush large 1 4x\`
         - _enlarge the 1st image by 4 times. The first number (in this case 1) is the image number and the size of the image mensioned by number that in before x
-        (in this case 4). You can use 2x 4x 6x 8x as your plan._
+        (in this case 4). You can use 2x 4x 6x 8x. Just reply to the MJ message like as download command._
 - '👇' 
     - _This is the easy way to download images. Add "point down" emoji to the MJ image message and then bot will download the image_
 
