@@ -1,4 +1,3 @@
-Certainly! Here's the Markdown formatted text for you to paste on GitHub:
 
 ```markdown
 # Mj Downloader
@@ -9,5 +8,3 @@ You can use this bot as SaaS to earn some $$$.
 
 Contact me: [Fiverr](https://www.fiverr.com/s/1XjgAK)
 ```
-
-This will create a nicely formatted section on GitHub with the title, description, and a clickable link to your Fiverr page.
